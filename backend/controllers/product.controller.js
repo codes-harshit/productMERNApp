@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Product } from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
@@ -40,6 +41,50 @@ export const deleteProduct = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: `Product not found error: ${error}`,
+    });
+  }
+};
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    return res.status(200).json({
+      success: true,
+      data: products,
+      message: "Products fetched successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Unable to fetch products: ${error}`,
+    });
+  }
+};
+
+export const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const product = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      data: "Invalid Product id.",
+    });
+  }
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(id, product, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: updatedProduct,
+      message: "Product updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Unable to update product: ${error}`,
     });
   }
 };

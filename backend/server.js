@@ -1,19 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.config.js";
-import {
-  createProduct,
-  deleteProduct,
-} from "./controllers/product.controller.js";
+import productRouter from "./routes/product.routes.js";
 
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 
-app.post("/api/v1/products", createProduct);
-
-app.delete("/api/v1/products/:id", deleteProduct);
+app.use("/api/v1/products", productRouter);
 
 app.listen(process.env.PORT || 5000, () => {
   connectDB();
