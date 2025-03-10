@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Createpage from "./pages/Createpage";
 import AppLayout from "./components/AppLayout";
+import ProductStoreProvider from "./store/product.store.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,7 +23,11 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <ProductStoreProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </ProductStoreProvider>
+  );
 }
 
 export default App;
